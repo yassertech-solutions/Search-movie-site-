@@ -1,0 +1,231 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YASSER SITE</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#080808;color:white;font-family:Arial,sans-serif}
+button{cursor:pointer;border:0}
+#welcome{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:22px;background:linear-gradient(#0009,#000e),url('https://i.ibb.co/xtrF233J/jawadmd.jpg') center/cover}
+.welcome-box{width:100%;max-width:420px;text-align:center;background:#090909dc;border:1px solid #e50914;border-radius:18px;padding:28px 20px;box-shadow:0 0 35px #e5091440}
+.profile{width:115px;height:115px;object-fit:cover;border-radius:50%;border:3px solid #e50914;margin-bottom:20px}
+h1{color:#e50914;font-size:30px;margin-bottom:10px}
+.welcome-box p{color:#ccc;margin-bottom:22px}
+input{width:100%;padding:15px;background:#171717;color:white;border:1px solid #555;border-radius:7px;font-size:16px;margin-bottom:13px}
+.enter{width:100%;padding:15px;background:#e50914;color:white;font-weight:bold;border-radius:7px;font-size:16px}
+.small{font-size:12px!important;color:#aaa!important;margin-top:18px;margin-bottom:0!important}
+#home{display:none}
+header{padding:17px;background:#111;border-bottom:2px solid #e50914;display:flex;justify-content:space-between;align-items:center}
+.logo{color:#e50914;font-size:21px;font-weight:bold}
+.hero{padding:45px 20px;background:linear-gradient(90deg,#000,#0008),url('https://i.ibb.co/xtrF233J/jawadmd.jpg') center/cover}
+.hero h2{font-size:30px;margin-bottom:10px}
+.hero p{color:#ddd;line-height:1.5}
+.search{display:flex;padding:17px;gap:8px}
+.search input{margin:0;min-width:0}
+.search button,.tabs button{background:#e50914;color:white;padding:12px;border-radius:6px}
+.tabs{display:flex;gap:8px;padding:0 15px 20px;flex-wrap:wrap}
+.tabs button{background:#252525}
+.tabs button.active{background:#e50914}
+h3.section{padding:5px 17px 15px}
+.movies{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;padding:0 13px 30px}
+.movie{background:#171717;border-radius:8px;overflow:hidden}
+.movie img{width:100%;aspect-ratio:2/3;object-fit:cover}
+.info{padding:10px}
+.info h4{font-size:14px;margin-bottom:8px}
+.rating{color:#ffc107;font-size:12px;margin-bottom:10px}
+.info button{width:100%;background:#e50914;color:white;padding:10px;border-radius:5px}
+#message{text-align:center;color:#bbb;padding:25px}
+#modal{display:none;position:fixed;inset:0;background:#000e;z-index:5;overflow:auto;padding:20px}
+.modalbox{max-width:550px;margin:30px auto;background:#181818;padding:20px;border-radius:10px}
+.modalbox img{width:100%;border-radius:8px}
+.modalbox p{line-height:1.6;color:#ddd;margin:12px 0}
+.modalbox iframe{width:100%;aspect-ratio:16/9;border:0}
+.close{float:right;background:#e50914;color:white;padding:9px;border-radius:5px}
+footer{text-align:center;background:#111;padding:25px;color:#aaa;line-height:2}
+footer strong{color:#e50914}
+footer a{color:#e50914}
+.music{position:fixed;bottom:15px;right:15px;z-index:4}
+.music button{background:#e50914;color:white;padding:12px;border-radius:25px}
+@media(min-width:650px){.movies{grid-template-columns:repeat(4,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+
+<section id="welcome">
+<div class="welcome-box">
+<img class="profile" src="https://i.ibb.co/xtrF233J/jawadmd.jpg">
+<h1>WELCOME TO<br>YASSER SITE</h1>
+<p>Your Movie Experience Starts Here</p>
+<form id="loginForm">
+<input id="phone" type="tel" placeholder="Enter your phone number" required>
+<button class="enter" type="submit">ENTER SITE ➜</button>
+</form>
+<p class="small">Powered by YASSER TECH SOLUTION</p>
+</div>
+</section>
+
+<section id="home">
+<header>
+<div class="logo">YASSER MOVIE</div>
+<button onclick="toggleMusic()" style="background:#e50914;color:white;padding:10px;border-radius:6px">♫ Music</button>
+</header>
+
+<section class="hero">
+<h2>DISCOVER MOVIES</h2>
+<p>Explore popular movies, series and official trailers.</p>
+</section>
+
+<div class="search">
+<input id="search" placeholder="Search movies or series...">
+<button onclick="searchMovies()">SEARCH</button>
+</div>
+
+<div class="tabs">
+<button class="active" onclick="loadMovies('popular',this)">Popular</button>
+<button onclick="loadMovies('top_rated',this)">Top Rated</button>
+<button onclick="loadMovies('now_playing',this)">Now Playing</button>
+<button onclick="loadMovies('tv',this)">TV Series</button>
+</div>
+
+<h3 class="section" id="heading">POPULAR MOVIES</h3>
+<div class="movies" id="movies"></div>
+<div id="message">Loading movies...</div>
+
+<footer>
+<strong>YASSER TECH SOLUTION</strong><br>
+Contact Owner: +255793785960<br>
+<a href="https://whatsapp.com/channel/0029VbD1QcaGk1FkH9XpvD3X">JOIN WHATSAPP CHANNEL</a><br>
+© 2026 YASSER MOVIE SITE
+</footer>
+</section>
+
+<div class="modal" id="modal">
+<div class="modalbox">
+<button class="close" onclick="closeModal()">CLOSE ✕</button>
+<div id="details"></div>
+</div>
+</div>
+
+<audio id="music" loop src="https://files.catbox.moe/y1yt0e.mp3"></audio>
+<div class="music"><button id="musicBtn" onclick="toggleMusic()">▶ Play Music</button></div>
+
+<script>
+const moviesBox=document.getElementById("movies");
+const message=document.getElementById("message");
+
+document.getElementById("loginForm").addEventListener("submit",function(e){
+e.preventDefault();
+const phone=document.getElementById("phone").value.trim();
+if(phone.length<9){alert("Please enter a valid phone number");return;}
+document.getElementById("welcome").style.display="none";
+document.getElementById("home").style.display="block";
+loadMovies();
+});
+
+async function api(path){
+const res=await fetch("/api/movies?path="+encodeURIComponent(path));
+if(!res.ok)throw new Error("API error");
+return res.json();
+}
+
+function showMovies(items){
+moviesBox.innerHTML="";
+message.textContent=items.length?"":"No movies found.";
+items.forEach(m=>{
+if(!m.poster_path)return;
+const type=m.media_type==="tv"||m.first_air_date?"tv":"movie";
+const card=document.createElement("div");
+card.className="movie";
+const img=document.createElement("img");
+img.src="https://image.tmdb.org/t/p/w500"+m.poster_path;
+img.alt="Movie poster";
+const info=document.createElement("div");
+info.className="info";
+const title=document.createElement("h4");
+title.textContent=m.title||m.name;
+const rating=document.createElement("div");
+rating.className="rating";
+rating.textContent="★ "+(m.vote_average||"N/A")+"/10";
+const btn=document.createElement("button");
+btn.textContent="VIEW DETAILS";
+btn.onclick=()=>details(m.id,type);
+info.append(title,rating,btn);
+card.append(img,info);
+moviesBox.append(card);
+});
+}
+
+async function loadMovies(category="popular",button){
+message.textContent="Loading movies...";
+moviesBox.innerHTML="";
+document.getElementById("heading").textContent=category==="tv"?"POPULAR TV SERIES":category.toUpperCase()+" MOVIES";
+try{
+const path=category==="tv"?"/tv/popular":"/movie/"+category;
+const data=await api(path);
+showMovies(data.results||[]);
+}catch(e){message.textContent="Unable to load movies. Please try again.";}
+if(button){
+document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));
+button.classList.add("active");
+}
+}
+
+async function searchMovies(){
+const q=document.getElementById("search").value.trim();
+if(!q)return;
+message.textContent="Searching...";
+moviesBox.innerHTML="";
+document.getElementById("heading").textContent="SEARCH RESULTS";
+try{
+const data=await api("/search/multi?query="+encodeURIComponent(q));
+showMovies(data.results||[]);
+}catch(e){message.textContent="Search failed.";}
+}
+
+async function details(id,type){
+const modal=document.getElementById("modal");
+const box=document.getElementById("details");
+modal.style.display="block";
+box.innerHTML="<p>Loading...</p>";
+try{
+const movie=await api("/"+type+"/"+id);
+const videos=await api("/"+type+"/"+id+"/videos");
+box.innerHTML="";
+const title=document.createElement("h2");
+title.textContent=movie.title||movie.name;
+const img=document.createElement("img");
+img.src="https://image.tmdb.org/t/p/w780"+(movie.backdrop_path||movie.poster_path);
+const desc=document.createElement("p");
+desc.textContent=movie.overview||"No description available.";
+const rating=document.createElement("p");
+rating.textContent="⭐ Rating: "+movie.vote_average+"/10";
+box.append(title,img,desc,rating);
+const trailer=(videos.results||[]).find(v=>v.site==="YouTube"&&v.type==="Trailer");
+if(trailer){
+const frame=document.createElement("iframe");
+frame.src="https://www.youtube.com/embed/"+trailer.key;
+frame.allowFullscreen=true;
+box.append(frame);
+}
+}catch(e){box.textContent="Unable to load details.";}
+}
+
+function closeModal(){document.getElementById("modal").style.display="none";}
+
+function toggleMusic(){
+const audio=document.getElementById("music");
+const btn=document.getElementById("musicBtn");
+if(audio.paused){
+audio.play().then(()=>btn.textContent="❚❚ Pause Music").catch(()=>alert("Tap again to play music."));
+}else{
+audio.pause();
+btn.textContent="▶ Play Music";
+}
+}
+document.getElementById("search").addEventListener("keydown",e=>{if(e.key==="Enter")searchMovies();});
+</script>
+</body>
+</html>
